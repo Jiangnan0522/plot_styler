@@ -1,0 +1,11 @@
+{
+  "_comment": "Widths in INCHES, measured from the LaTeX templates. To get the real number, put \\typeout{columnwidth=\\the\\columnwidth, textwidth=\\the\\textwidth} in the source, compile, and divide the printed points by 72.27. Update these values once the real ones are known.",
+
+  "acl":     { "column": 3.17, "text": 6.30 },
+  "emnlp":   { "column": 3.17, "text": 6.30 },
+  "naacl":   { "column": 3.17, "text": 6.30 },
+
+  "neurips": { "text": 5.50 },
+  "iclr":    { "text": 5.50 },
+  "icml":    { "column": 3.25, "text": 6.75 }
+}

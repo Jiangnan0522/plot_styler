@@ -1,0 +1,10 @@
+# ACL / EMNLP / NAACL: two-column, 11pt body font.
+# Tick / legend sizes sit ~2pt below body so they blend with captions (10pt).
+
+font.size:         9
+axes.labelsize:    9
+axes.titlesize:    9
+legend.fontsize:   8
+xtick.labelsize:   8
+ytick.labelsize:   8
+figure.titlesize:  9

@@ -1,0 +1,68 @@
+# Base style shared by every conference override.
+# Contains only settings that are truly universal: font family, math font,
+# PDF embedding, palette, spines, grid, line/marker weights.
+# Font *sizes* and default figure widths live in the per-conference sheets.
+
+# --- Fonts -------------------------------------------------------------------
+# Sans-serif for figures to contrast with the paper's serif body text.
+font.family:       sans-serif
+font.sans-serif:   Helvetica, Arial, DejaVu Sans, Liberation Sans
+mathtext.fontset:  stix
+mathtext.default:  regular
+
+# --- PDF embedding (critical: avoid Type 3 fonts) ----------------------------
+pdf.fonttype:      42
+ps.fonttype:       42
+pdf.compression:   9
+
+# --- Colors (starting palette; tune later) -----------------------------------
+# #30A9DE blue, #E53A40 red, #090707 near-black, #EFDC05 yellow
+axes.prop_cycle:   cycler('color', ['30A9DE', 'E53A40', '090707', 'EFDC05'])
+
+# --- Axes --------------------------------------------------------------------
+axes.spines.top:   False
+axes.spines.right: False
+axes.linewidth:    0.8
+axes.labelpad:     2.0
+axes.titlepad:     3.0
+
+# --- Grid --------------------------------------------------------------------
+axes.grid:         True
+grid.alpha:        0.25
+grid.linewidth:    0.5
+grid.linestyle:    -
+
+# --- Lines & markers ---------------------------------------------------------
+lines.linewidth:   1.2
+lines.markersize:  3.0
+lines.markeredgewidth: 0.0
+
+# --- Ticks -------------------------------------------------------------------
+xtick.direction:   out
+ytick.direction:   out
+xtick.major.width: 0.6
+ytick.major.width: 0.6
+xtick.major.size:  2.5
+ytick.major.size:  2.5
+xtick.minor.width: 0.4
+ytick.minor.width: 0.4
+xtick.minor.size:  1.5
+ytick.minor.size:  1.5
+
+# --- Legend ------------------------------------------------------------------
+legend.frameon:    False
+legend.handlelength: 1.2
+legend.handletextpad: 0.4
+legend.columnspacing: 1.0
+legend.borderaxespad: 0.2
+
+# --- Layout & saving ---------------------------------------------------------
+figure.constrained_layout.use:   True
+figure.constrained_layout.h_pad: 0.02
+figure.constrained_layout.w_pad: 0.02
+figure.dpi:        150
+
+savefig.format:    pdf
+savefig.bbox:      tight
+savefig.pad_inches: 0.02
+savefig.transparent: False
