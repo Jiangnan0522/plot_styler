@@ -41,7 +41,7 @@ _CONFERENCE_TO_STYLE = {
     "naacl":   "acl",
     "neurips": "neurips",
     "iclr":    "neurips",
-    "icml":    "neurips",
+    "icml":    "icml",
 }
 
 

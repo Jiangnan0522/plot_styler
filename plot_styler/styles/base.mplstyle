@@ -16,10 +16,10 @@ ps.fonttype:       42
 pdf.compression:   9
 
 # --- Colors ------------------------------------------------------------------
-# No axes.prop_cycle here on purpose: the color cycle is owned by palettes.json
-# and applied by plot_styler.use() / plot_styler.set_palette() at runtime.
-# Using this .mplstyle directly (without the Python API) will fall back to
-# matplotlib's built-in default cycle.
+# No axes.prop_cycle here on purpose: the color cycle is owned by the
+# palettes/ directory and applied by plot_styler.use() / .set_palette()
+# at runtime. Using this .mplstyle directly (without the Python API) will
+# fall back to matplotlib's built-in default cycle.
 
 # --- Axes --------------------------------------------------------------------
 axes.spines.top:   False

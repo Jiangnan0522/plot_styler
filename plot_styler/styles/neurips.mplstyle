@@ -1,6 +1,6 @@
-# 10pt body font templates:
-#   NeurIPS, ICLR  — single-column (textwidth 5.5 in)
-#   ICML           — two-column    (columnwidth 3.25 in, textwidth 6.75 in)
+# NeurIPS / ICLR: single-column, 10pt body font (textwidth 5.5 in).
+# ICML uses the same body font but has its own sheet (icml.mplstyle) so
+# two-column-specific tweaks stay isolated.
 # This sheet only sets font sizes; widths live in widths.json.
 # Tick / legend sizes sit ~2pt below body.
 

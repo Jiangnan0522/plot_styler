@@ -105,12 +105,16 @@ the common pitfalls around context-dependent lengths.
 - Spines (top/right off), light grid, sensible line/marker widths, no legend
   frame, `constrained_layout` on.
 - `savefig.format: pdf`, `savefig.bbox: tight`.
-- **No `axes.prop_cycle`** — the color cycle is owned by `palettes.json` and
-  applied at runtime by `ps.use()` / `ps.set_palette()`.
+- **No `axes.prop_cycle`** — the color cycle is owned by the `palettes/`
+  directory and applied at runtime by `ps.use()` / `ps.set_palette()`.
 
-`acl.mplstyle` — for 11pt body templates: `font.size: 9`, ticks/legend at 8.
+`acl.mplstyle` — ACL/EMNLP/NAACL (11pt body): `font.size: 9`, ticks/legend at 8.
 
-`neurips.mplstyle` — for 10pt body templates: `font.size: 8`, ticks/legend at 7.
+`neurips.mplstyle` — NeurIPS/ICLR (10pt body, single-column): `font.size: 8`,
+ticks/legend at 7.
+
+`icml.mplstyle` — ICML (10pt body, two-column): same sizes as NeurIPS; kept as
+a separate file so ICML-only tweaks don't affect the single-column templates.
 
 ## Palettes
 
@@ -162,7 +166,8 @@ plot_styler/
 │   └── styles/
 │       ├── base.mplstyle
 │       ├── acl.mplstyle
-│       └── neurips.mplstyle
+│       ├── neurips.mplstyle
+│       └── icml.mplstyle
 └── examples/
     └── demo.py              # renders five sample PDFs
 ```

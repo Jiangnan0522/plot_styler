@@ -1,0 +1,12 @@
+# ICML: two-column layout, 10pt body font (article default; normalsize is
+# redefined to 10/11 in icml2026.sty).
+# Sizes match NeurIPS/ICLR since body font is the same; kept as a separate
+# file so ICML-only tweaks don't affect the single-column templates.
+
+font.size:         8
+axes.labelsize:    8
+axes.titlesize:    8
+legend.fontsize:   7
+xtick.labelsize:   7
+ytick.labelsize:   7
+figure.titlesize:  8

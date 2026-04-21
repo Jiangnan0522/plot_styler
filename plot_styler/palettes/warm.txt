@@ -1,4 +1,3 @@
-#F5EBE0
-#F0DBDB
-#DBA39A
-#FEFCF3
+#f4d8baff
+#f0b0b0ff
+#d08b66ff
