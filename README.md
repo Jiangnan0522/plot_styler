@@ -116,9 +116,9 @@ the common pitfalls around context-dependent lengths.
 
 Named color cycles live in `plot_styler/palettes/` as one `.txt` file per
 palette. The filename (minus `.txt`) is the palette name; hex values are
-scraped from the file with the regex `#[0-9A-Fa-f]{6}\b`, in file order.
-Lines starting with `#` that don't contain a valid 6-char hex are treated
-as comments.
+scraped from the file in file order, in either `#RRGGBB` or `#RRGGBBAA`
+(alpha) form. Lines starting with `#` that don't contain a valid hex are
+treated as comments.
 
 ```
 # plot_styler/palettes/default.txt

@@ -28,7 +28,9 @@ _PACKAGE_ROOT = Path(__file__).resolve().parent
 _STYLES_DIR = _PACKAGE_ROOT / "styles"
 _WIDTHS_PATH = _PACKAGE_ROOT / "widths.json"
 _PALETTES_DIR = _PACKAGE_ROOT / "palettes"
-_HEX_RE = re.compile(r"#[0-9A-Fa-f]{6}\b")
+# Accept #RRGGBB or #RRGGBBAA. The optional alpha group is greedy, so an
+# 8-char hex like #f2dbc3ff matches in full rather than being clipped to 6.
+_HEX_RE = re.compile(r"#[0-9A-Fa-f]{6}(?:[0-9A-Fa-f]{2})?\b")
 
 GOLDEN = (1 + 5 ** 0.5) / 2  # 1.618…
 
