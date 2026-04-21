@@ -14,4 +14,4 @@ where = ["."]
 include = ["plot_styler*"]
 
 [tool.setuptools.package-data]
-plot_styler = ["styles/*.mplstyle", "widths.json"]
+plot_styler = ["styles/*.mplstyle", "palettes/*.txt", "widths.json"]

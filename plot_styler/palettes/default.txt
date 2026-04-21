@@ -1,0 +1,6 @@
+# default palette - starting point, tune for colorblindness later
+# Source: original four-color set picked by hand.
+#30A9DE
+#E53A40
+#090707
+#EFDC05

@@ -1,0 +1,9 @@
+# colorblind_safe palette - distinguishable for deuteranopia/protanopia
+# Source: Wong 2011, Nature Methods 8, 441.
+#E69F00
+#56B4E9
+#009E73
+#F0E442
+#0072B2
+#D55E00
+#CC79A7

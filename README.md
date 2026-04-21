@@ -114,27 +114,36 @@ the common pitfalls around context-dependent lengths.
 
 ## Palettes
 
-Named color cycles live in `plot_styler/palettes.json` as flat hex lists:
+Named color cycles live in `plot_styler/palettes/` as one `.txt` file per
+palette. The filename (minus `.txt`) is the palette name; hex values are
+scraped from the file with the regex `#[0-9A-Fa-f]{6}\b`, in file order.
+Lines starting with `#` that don't contain a valid 6-char hex are treated
+as comments.
 
-```json
-{
-  "default":         ["#30A9DE", "#E53A40", "#090707", "#EFDC05"],
-  "muted":           ["#4C72B0", "#DD8452", "#55A868", ...],
-  "vibrant":         ["#EE7733", "#0077BB", "#33BBEE", ...],
-  "colorblind_safe": ["#E69F00", "#56B4E9", "#009E73", ...]
-}
+```
+# plot_styler/palettes/default.txt
+# Starting palette - tune for colorblindness later.
+#30A9DE
+#E53A40
+#090707
+#EFDC05
 ```
 
 - `ps.use(conference, palette="muted")` — activates the palette with the style.
 - `ps.set_palette("vibrant")` — swaps the cycle mid-script; only later-created
   Axes see the change, because matplotlib reads `axes.prop_cycle` when an Axes
   is constructed.
-- `ps.load_palettes()` — returns the dict if you need a specific hex (e.g. to
-  hardcode one series' color: `ax.plot(x, y, color=ps.load_palettes()["muted"][2])`).
+- `ps.load_palettes()` — returns `{name: [hex, ...]}` if you need a specific
+  hex (e.g. `ax.plot(x, y, color=ps.load_palettes()["muted"][2])`).
 
-To add a palette (e.g., a paper-specific one), edit `palettes.json` in place —
-the editable install picks it up on the next Python run. Names can be
-aesthetic (`warm`, `cool`) or paper-specific (`beacon_paper_camera_ready`).
+To add a palette, drop a new `.txt` file into `plot_styler/palettes/`. To
+disable one, delete or rename its file. Reorder colors by moving lines within
+the file. Names can be aesthetic (`warm.txt`, `cool.txt`) or paper-specific
+(`beacon_paper_camera_ready.txt`).
+
+> If you're using VS Code, install the "Color Highlight" extension (by
+> naumovs) to get inline color swatches in `.txt` files. Native VS Code
+> only shows swatches in CSS-family languages.
 
 ## Layout
 
@@ -145,7 +154,11 @@ plot_styler/
 │   ├── __init__.py          # exposes use, figsize, load_widths, GOLDEN
 │   ├── core.py              # the API
 │   ├── widths.json          # per-conference widths in inches — edit freely
-│   ├── palettes.json        # named color cycles — edit to add paper palettes
+│   ├── palettes/            # one .txt per palette (add / remove freely)
+│   │   ├── default.txt
+│   │   ├── muted.txt
+│   │   ├── vibrant.txt
+│   │   └── colorblind_safe.txt
 │   └── styles/
 │       ├── base.mplstyle
 │       ├── acl.mplstyle

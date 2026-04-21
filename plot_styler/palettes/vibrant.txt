@@ -1,0 +1,9 @@
+# vibrant palette - high-contrast saturated colors
+# Source: Paul Tol, "vibrant"  (https://personal.sron.nl/~pault/)
+#EE7733
+#0077BB
+#33BBEE
+#EE3377
+#CC3311
+#009988
+#BBBBBB

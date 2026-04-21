@@ -17,6 +17,7 @@ Typical usage:
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from typing import List, Tuple
 
@@ -26,7 +27,8 @@ from cycler import cycler
 _PACKAGE_ROOT = Path(__file__).resolve().parent
 _STYLES_DIR = _PACKAGE_ROOT / "styles"
 _WIDTHS_PATH = _PACKAGE_ROOT / "widths.json"
-_PALETTES_PATH = _PACKAGE_ROOT / "palettes.json"
+_PALETTES_DIR = _PACKAGE_ROOT / "palettes"
+_HEX_RE = re.compile(r"#[0-9A-Fa-f]{6}\b")
 
 GOLDEN = (1 + 5 ** 0.5) / 2  # 1.618…
 
@@ -48,9 +50,18 @@ def load_widths() -> dict:
 
 
 def load_palettes() -> dict:
-    with open(_PALETTES_PATH) as f:
-        data = json.load(f)
-    return {k: v for k, v in data.items() if not k.startswith("_")}
+    """Scan palettes/ for .txt files; return {stem: [hex, ...]}.
+
+    Each file contributes one palette, named after its filename stem.
+    Hex values are extracted in file order via a regex, so lines like
+    `# my comment` are ignored unless they contain a valid #RRGGBB.
+    """
+    palettes = {}
+    for path in sorted(_PALETTES_DIR.glob("*.txt")):
+        colors = _HEX_RE.findall(path.read_text())
+        if colors:
+            palettes[path.stem] = colors
+    return palettes
 
 
 def set_palette(name: str) -> List[str]:
