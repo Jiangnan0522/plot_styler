@@ -21,8 +21,8 @@ def sample_plot(ax):
     ax.legend(ncols=2)
 
 
-def render(conference, region, fraction, fname):
-    ps.use(conference)
+def render(conference, region, fraction, fname, palette="default"):
+    ps.use(conference, palette=palette)
     fig, ax = plt.subplots(figsize=ps.figsize(conference, region, fraction=fraction))
     sample_plot(ax)
     fig.savefig(OUT / fname)
@@ -35,4 +35,9 @@ if __name__ == "__main__":
     render("acl",     "text",   1.0, "acl_text.pdf")
     render("neurips", "text",   1.0, "neurips_full.pdf")
     render("neurips", "text",   0.5, "neurips_half.pdf")
+
+    # One figure per palette, to visually compare.
+    for name in ps.load_palettes():
+        render("acl", "column", 1.0, f"palette_{name}.pdf", palette=name)
+
     print(f"Wrote {len(list(OUT.glob('*.pdf')))} PDFs to {OUT}")

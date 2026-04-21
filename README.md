@@ -20,7 +20,7 @@ take effect immediately across every project that imports the package.
 import matplotlib.pyplot as plt
 import plot_styler as ps
 
-ps.use("acl")                                         # activates base + acl style
+ps.use("acl")                                         # base + acl style + default palette
 fig, ax = plt.subplots(figsize=ps.figsize("acl", "column"))
 ax.plot(...)
 fig.savefig("myplot.pdf")                             # pdf is the default savefig format
@@ -40,6 +40,14 @@ ps.figsize("neurips", "text")
 
 # Three subfigures across NeurIPS text width, custom aspect ratio:
 ps.figsize("neurips", "text", fraction=1/3, aspect=0.8)
+```
+
+Palettes:
+
+```python
+ps.use("acl", palette="muted")           # pick at style activation
+ps.set_palette("colorblind_safe")         # swap mid-script; affects only later plots
+colors = ps.load_palettes()["vibrant"]    # get a palette's hex list directly
 ```
 
 Conference aliases: `emnlp`, `naacl` → ACL style; `iclr`, `icml` → NeurIPS style.
@@ -94,15 +102,39 @@ the common pitfalls around context-dependent lengths.
 - `pdf.fonttype: 42` / `ps.fonttype: 42` — embeds TrueType fonts. This is
   critical: arXiv and IEEE Xplore reject PDFs with Type 3 fonts, and many
   viewers can't select text in them.
-- Colorblind-ish palette: `#30A9DE #E53A40 #090707 #EFDC05` (placeholder, tune
-  later).
 - Spines (top/right off), light grid, sensible line/marker widths, no legend
   frame, `constrained_layout` on.
 - `savefig.format: pdf`, `savefig.bbox: tight`.
+- **No `axes.prop_cycle`** — the color cycle is owned by `palettes.json` and
+  applied at runtime by `ps.use()` / `ps.set_palette()`.
 
 `acl.mplstyle` — for 11pt body templates: `font.size: 9`, ticks/legend at 8.
 
 `neurips.mplstyle` — for 10pt body templates: `font.size: 8`, ticks/legend at 7.
+
+## Palettes
+
+Named color cycles live in `plot_styler/palettes.json` as flat hex lists:
+
+```json
+{
+  "default":         ["#30A9DE", "#E53A40", "#090707", "#EFDC05"],
+  "muted":           ["#4C72B0", "#DD8452", "#55A868", ...],
+  "vibrant":         ["#EE7733", "#0077BB", "#33BBEE", ...],
+  "colorblind_safe": ["#E69F00", "#56B4E9", "#009E73", ...]
+}
+```
+
+- `ps.use(conference, palette="muted")` — activates the palette with the style.
+- `ps.set_palette("vibrant")` — swaps the cycle mid-script; only later-created
+  Axes see the change, because matplotlib reads `axes.prop_cycle` when an Axes
+  is constructed.
+- `ps.load_palettes()` — returns the dict if you need a specific hex (e.g. to
+  hardcode one series' color: `ax.plot(x, y, color=ps.load_palettes()["muted"][2])`).
+
+To add a palette (e.g., a paper-specific one), edit `palettes.json` in place —
+the editable install picks it up on the next Python run. Names can be
+aesthetic (`warm`, `cool`) or paper-specific (`beacon_paper_camera_ready`).
 
 ## Layout
 
@@ -113,6 +145,7 @@ plot_styler/
 │   ├── __init__.py          # exposes use, figsize, load_widths, GOLDEN
 │   ├── core.py              # the API
 │   ├── widths.json          # per-conference widths in inches — edit freely
+│   ├── palettes.json        # named color cycles — edit to add paper palettes
 │   └── styles/
 │       ├── base.mplstyle
 │       ├── acl.mplstyle
@@ -125,9 +158,11 @@ plot_styler/
 
 | Function | Purpose |
 |---|---|
-| `ps.use(conference)` | Load base + conference style. |
+| `ps.use(conference, palette="default")` | Load base + conference style and apply the named palette. |
 | `ps.figsize(conference, region, fraction=1.0, aspect=1/GOLDEN, gutter=0.1)` | Compute `(w, h)` in inches. `region` is a key in `widths.json` (usually `"column"` or `"text"`). `fraction` is the width share for side-by-side subfigures. `gutter` is the inches of horizontal gap between them. |
-| `ps.load_widths()` | Return the widths dict, e.g. for custom calculations. |
+| `ps.set_palette(name)` | Swap the matplotlib color cycle to the named palette; affects Axes created after this call. Returns the list of hex colors. |
+| `ps.load_widths()` | Return the widths dict. |
+| `ps.load_palettes()` | Return the palettes dict — use to grab a specific hex value. |
 | `ps.GOLDEN` | `(1 + √5) / 2`, used as the default aspect. |
 
 ## Extending to a new conference

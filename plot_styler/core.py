@@ -4,24 +4,29 @@ Typical usage:
 
     import plot_styler as ps
 
-    ps.use("acl")
+    ps.use("acl", palette="muted")
     fig, ax = plt.subplots(figsize=ps.figsize("acl", "column"))
 
     # Two subfigures side-by-side in a single ACL column:
     fig, ax = plt.subplots(figsize=ps.figsize("acl", "column", fraction=0.5))
+
+    # Switch palette mid-script — only affects plots created afterwards:
+    ps.set_palette("colorblind_safe")
 """
 
 from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Tuple
+from typing import List, Tuple
 
 import matplotlib.pyplot as plt
+from cycler import cycler
 
 _PACKAGE_ROOT = Path(__file__).resolve().parent
 _STYLES_DIR = _PACKAGE_ROOT / "styles"
 _WIDTHS_PATH = _PACKAGE_ROOT / "widths.json"
+_PALETTES_PATH = _PACKAGE_ROOT / "palettes.json"
 
 GOLDEN = (1 + 5 ** 0.5) / 2  # 1.618…
 
@@ -42,8 +47,30 @@ def load_widths() -> dict:
     return {k: v for k, v in data.items() if not k.startswith("_")}
 
 
-def use(conference: str) -> None:
-    """Apply base style + the given conference's overrides."""
+def load_palettes() -> dict:
+    with open(_PALETTES_PATH) as f:
+        data = json.load(f)
+    return {k: v for k, v in data.items() if not k.startswith("_")}
+
+
+def set_palette(name: str) -> List[str]:
+    """Change matplotlib's color cycle to the named palette.
+
+    Only affects plots created after this call — existing Axes keep their
+    assigned colors. Returns the list of hex colors now in the cycle.
+    """
+    palettes = load_palettes()
+    if name not in palettes:
+        raise KeyError(
+            f"Unknown palette '{name}'. Known: {sorted(palettes)}"
+        )
+    colors = palettes[name]
+    plt.rcParams["axes.prop_cycle"] = cycler(color=colors)
+    return colors
+
+
+def use(conference: str, palette: str = "default") -> None:
+    """Apply base style + the given conference's overrides + a palette."""
     key = conference.lower()
     if key not in _CONFERENCE_TO_STYLE:
         raise KeyError(
@@ -53,6 +80,7 @@ def use(conference: str) -> None:
     base = _STYLES_DIR / "base.mplstyle"
     conf = _STYLES_DIR / f"{_CONFERENCE_TO_STYLE[key]}.mplstyle"
     plt.style.use([str(base), str(conf)])
+    set_palette(palette)
 
 
 def figsize(
