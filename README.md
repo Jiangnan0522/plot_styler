@@ -8,7 +8,9 @@ template — no per-project copy-pasting of rc settings.
 ## Install
 
 ```bash
-pip install -e /users/k21025815/storage/misc/plot_styler
+git clone https://github.com/Jiangnan0522/plot_styler.git
+cd plot_styler
+pip install -e .
 ```
 
 Editable install is recommended: edits to `widths.json` and `.mplstyle` files
