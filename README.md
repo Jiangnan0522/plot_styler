@@ -1,9 +1,13 @@
 # plot_styler
 
-Reusable matplotlib styling for NLP / ML conference papers (ACL, EMNLP, NAACL,
-NeurIPS, ICLR, ICML). One `pip install -e .`, one `import plot_styler`, and
-figures come out at the right width with the right font size for the target
-template — no per-project copy-pasting of rc settings.
+⭐️ Reusable matplotlib styling for NLP / ML conference papers (ACL, EMNLP, NAACL,
+NeurIPS, ICLR, ICML). 
+
+One `pip install -e .`, one `import plot_styler`, 
+and figures come out at the right width with the right font size for the target
+template 
+
+no more copy-pasting image from your IDE to Overleaf! Saving your time exponentially!
 
 ## Install
 
