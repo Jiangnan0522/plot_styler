@@ -52,7 +52,7 @@ ps.set_palette("colorblind_safe")         # swap mid-script; affects only later 
 colors = ps.load_palettes()["vibrant"]    # get a palette's hex list directly
 ```
 
-Conference aliases: `emnlp`, `naacl` → ACL style; `iclr`, `icml` → NeurIPS style.
+Conference aliases: `emnlp`, `naacl` → ACL style; `iclr` → NeurIPS style.
 
 See `examples/demo.py` for a runnable end-to-end example.
 
