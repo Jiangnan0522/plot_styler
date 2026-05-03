@@ -1,0 +1,28 @@
+# ACL/EMNLP/NAACL — small variant.
+# Target: figures occupying ~one third of a column (e.g. fraction=0.33).
+# Layered AFTER acl.mplstyle in plot_styler.use(); only contains deltas.
+
+# --- Font sizes --------------------------------------------------------------
+font.size:         7
+axes.labelsize:    7
+axes.titlesize:    7
+legend.fontsize:   6
+xtick.labelsize:   5
+ytick.labelsize:   5
+figure.titlesize:  7
+
+# --- Visual weights ----------------------------------------------------------
+# Strokes render in absolute points; shrunk text needs lighter strokes
+# to avoid a visually heavy frame around small labels.
+axes.linewidth:    0.6
+grid.linewidth:    0.4
+lines.linewidth:   1.0
+lines.markersize:  2.5
+xtick.major.size:  2.0
+ytick.major.size:  2.0
+xtick.major.width: 0.5
+ytick.major.width: 0.5
+xtick.minor.size:  1.2
+ytick.minor.size:  1.2
+xtick.minor.width: 0.35
+ytick.minor.width: 0.35

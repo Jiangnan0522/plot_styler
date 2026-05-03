@@ -21,8 +21,8 @@ def sample_plot(ax):
     ax.legend(ncols=2)
 
 
-def render(conference, region, fraction, fname, palette="default"):
-    ps.use(conference, palette=palette)
+def render(conference, region, fraction, fname, palette="default", size="normal"):
+    ps.use(conference, palette=palette, size=size)
     fig, ax = plt.subplots(figsize=ps.figsize(conference, region, fraction=fraction))
     sample_plot(ax)
     fig.savefig(OUT / fname)
@@ -35,6 +35,12 @@ if __name__ == "__main__":
     render("acl",     "text",   1.0, "acl_text.pdf")
     render("neurips", "text",   1.0, "neurips_full.pdf")
     render("neurips", "text",   0.5, "neurips_half.pdf")
+
+    # Size variants for very small footprints.
+    render("acl",     "column", 1 / 3,  "acl_third_small.pdf",  size="small")
+    render("acl",     "column", 0.25,   "acl_quarter_tiny.pdf", size="tiny")
+    render("neurips", "text",   1 / 3,  "neurips_third_small.pdf", size="small")
+    render("icml",    "text",   0.25,   "icml_quarter_tiny.pdf",   size="tiny")
 
     # One figure per palette, to visually compare.
     for name in ps.load_palettes():

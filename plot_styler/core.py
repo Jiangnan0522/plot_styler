@@ -10,6 +10,10 @@ Typical usage:
     # Two subfigures side-by-side in a single ACL column:
     fig, ax = plt.subplots(figsize=ps.figsize("acl", "column", fraction=0.5))
 
+    # Pre-tuned typography for shrunken figures (~1/3 or ~1/4 of column/text):
+    ps.use("acl", palette="muted", size="small")
+    ps.use("icml", palette="warm", size="tiny")
+
     # Switch palette mid-script — only affects plots created afterwards:
     ps.set_palette("colorblind_safe")
 """
@@ -43,6 +47,13 @@ _CONFERENCE_TO_STYLE = {
     "iclr":    "neurips",
     "icml":    "icml",
 }
+
+# Size variants that can be layered on top of the conference sheet.
+# `normal` loads only the conference sheet; the others additionally load
+# `<stem>-<size>.mplstyle` from styles/, which carries reduced font sizes
+# and lighter strokes for figures that occupy ~1/3 (small) or ~1/4 (tiny)
+# of a column or text width.
+_VALID_SIZES = ("normal", "small", "tiny")
 
 
 def load_widths() -> dict:
@@ -82,17 +93,36 @@ def set_palette(name: str) -> List[str]:
     return colors
 
 
-def use(conference: str, palette: str = "default") -> None:
-    """Apply base style + the given conference's overrides + a palette."""
+def use(
+    conference: str, palette: str = "default", size: str = "normal"
+) -> None:
+    """Apply base style + the given conference's overrides + a palette.
+
+    `size` selects an optional pre-tuned variant for shrunken figures:
+    "small" (~1/3 of column/text) or "tiny" (~1/4). The variant sheet is
+    layered on top of the conference sheet, so it only needs to carry deltas.
+    """
     key = conference.lower()
     if key not in _CONFERENCE_TO_STYLE:
         raise KeyError(
             f"Unknown conference '{conference}'. "
             f"Known: {sorted(_CONFERENCE_TO_STYLE)}"
         )
+    if size not in _VALID_SIZES:
+        raise ValueError(
+            f"Unknown size '{size}'. Known: {_VALID_SIZES}"
+        )
     base = _STYLES_DIR / "base.mplstyle"
-    conf = _STYLES_DIR / f"{_CONFERENCE_TO_STYLE[key]}.mplstyle"
-    plt.style.use([str(base), str(conf)])
+    conf_stem = _CONFERENCE_TO_STYLE[key]
+    sheets = [str(base), str(_STYLES_DIR / f"{conf_stem}.mplstyle")]
+    if size != "normal":
+        variant = _STYLES_DIR / f"{conf_stem}-{size}.mplstyle"
+        if not variant.exists():
+            raise FileNotFoundError(
+                f"Missing size sheet for {conf_stem}/{size}: {variant}"
+            )
+        sheets.append(str(variant))
+    plt.style.use(sheets)
     set_palette(palette)
 
 

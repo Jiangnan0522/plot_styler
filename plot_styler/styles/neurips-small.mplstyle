@@ -1,0 +1,26 @@
+# NeurIPS/ICLR — small variant.
+# Target: figures occupying ~one third of the text width (e.g. fraction=0.33).
+# Layered AFTER neurips.mplstyle in plot_styler.use(); only contains deltas.
+
+# --- Font sizes --------------------------------------------------------------
+font.size:         6
+axes.labelsize:    6
+axes.titlesize:    6
+legend.fontsize:   5
+xtick.labelsize:   5
+ytick.labelsize:   5
+figure.titlesize:  6
+
+# --- Visual weights ----------------------------------------------------------
+axes.linewidth:    0.6
+grid.linewidth:    0.4
+lines.linewidth:   1.0
+lines.markersize:  2.5
+xtick.major.size:  2.0
+ytick.major.size:  2.0
+xtick.major.width: 0.5
+ytick.major.width: 0.5
+xtick.minor.size:  1.2
+ytick.minor.size:  1.2
+xtick.minor.width: 0.35
+ytick.minor.width: 0.35
