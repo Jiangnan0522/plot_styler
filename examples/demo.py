@@ -19,6 +19,12 @@ def sample_plot(ax):
     ax.set_xlabel(r"$x$")
     ax.set_ylabel(r"$f(x)$")
     ax.legend(ncols=2)
+    # Corner stats annotation using ps.textbox().
+    ax.text(
+        0.97, 0.03, r"$n = 200$",
+        transform=ax.transAxes, ha="right", va="bottom",
+        bbox=ps.textbox(),
+    )
 
 
 def render(conference, region, fraction, fname, palette="default", size="normal"):

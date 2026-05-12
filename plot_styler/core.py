@@ -126,6 +126,118 @@ def use(
     set_palette(palette)
 
 
+# ---------------------------------------------------------------------------
+# Textbox styles for in-plot stats annotations
+# ---------------------------------------------------------------------------
+#
+# Each style is a subclass of TextBoxStyle that defines a `_BBOX` class
+# attribute — the dict of kwargs passed to ax.text(..., bbox=...).
+# The `textbox()` factory below looks up a style by name in _TEXTBOX_STYLES
+# and returns a fresh dict (so callers can mutate without affecting others).
+#
+# To add a style: subclass TextBoxStyle with a new `_BBOX`, then register
+# it in _TEXTBOX_STYLES. No other changes needed.
+
+
+class TextBoxStyle:
+    """Base class for textbox styles.
+
+    Subclasses override the ``_BBOX`` class attribute with a dict of kwargs
+    to pass to ``ax.text(..., bbox=...)``. Instances are never created — the
+    style itself is a singleton, encoded as class-level state.
+    """
+
+    _BBOX: dict = {}
+
+    @classmethod
+    def build(cls, **overrides) -> dict:
+        """Return a fresh bbox dict, with kwargs overriding class defaults."""
+        return {**cls._BBOX, **overrides}
+
+
+class RoundTextBox(TextBoxStyle):
+    """Rounded, semi-transparent white box with a grey border.
+
+    The classic stats-annotation style — readable without overpowering plot
+    content. Use as the default unless the figure has a strong reason to
+    differ.
+    """
+
+    _BBOX = {
+        "boxstyle": "round,pad=0.3",
+        "facecolor": "white",
+        "edgecolor": "grey",
+        "alpha": 0.75,
+    }
+
+
+class SquareTextBox(TextBoxStyle):
+    """Sharp-cornered counterpart to ``RoundTextBox``.
+
+    Use when the figure's visual language already favors right angles
+    (heatmaps, contingency tables, lattice plots).
+    """
+
+    _BBOX = {
+        "boxstyle": "square,pad=0.3",
+        "facecolor": "white",
+        "edgecolor": "grey",
+        "alpha": 0.75,
+    }
+
+
+class MinimalTextBox(TextBoxStyle):
+    """Borderless, faint white backdrop — visible only as a soft wash.
+
+    Use when the annotation must not visually compete with dense plot
+    content (small multiples, overlaid time series). The reduced ``alpha``
+    and absent edge keep the box from reading as a foreground element.
+    """
+
+    _BBOX = {
+        "boxstyle": "round,pad=0.2",
+        "facecolor": "white",
+        "edgecolor": "none",
+        "alpha": 0.5,
+    }
+
+
+_TEXTBOX_STYLES: dict = {
+    "round": RoundTextBox,
+    "square": SquareTextBox,
+    "minimal": MinimalTextBox,
+}
+
+
+def textbox(style: str = "round", **overrides) -> dict:
+    """Return a bbox dict for ``ax.text(..., bbox=...)`` annotations.
+
+    A factory that dispatches to one of the registered ``TextBoxStyle``
+    subclasses. A fresh dict is returned on each call, so callers may
+    mutate the result freely.
+
+    Args:
+        style: registered style name. Built-in: ``"round"`` (default),
+               ``"square"``, ``"minimal"``. To add a style, subclass
+               ``TextBoxStyle`` and register it in ``_TEXTBOX_STYLES``.
+        **overrides: per-call overrides (e.g. ``alpha=0.9``,
+                     ``edgecolor="black"``, or any ``FancyBboxPatch`` kwarg).
+
+    Example::
+
+        ax.text(0.97, 0.97, "p < 1e-4", transform=ax.transAxes,
+                ha="right", va="top", bbox=ps.textbox())
+        ax.text(..., bbox=ps.textbox("square", alpha=0.9))
+        ax.text(..., bbox=ps.textbox("minimal"))
+    """
+    if style not in _TEXTBOX_STYLES:
+        raise KeyError(
+            f"Unknown textbox style '{style}'. "
+            f"Known: {sorted(_TEXTBOX_STYLES)}"
+        )
+    return _TEXTBOX_STYLES[style].build(**overrides)
+
+
 def figsize(
     conference: str,
     region: str = "text",

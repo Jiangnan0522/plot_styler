@@ -68,6 +68,37 @@ when each tier is appropriate.
 
 Conference aliases: `emnlp`, `naacl` → ACL style; `iclr` → NeurIPS style.
 
+In-plot stats annotations (p-values, r-values, sample counts) — `ps.textbox()`
+is a factory that returns a `bbox` dict in one of several pre-tuned styles:
+
+```python
+# Default style: "round" — semi-transparent white box, grey border.
+ax.text(0.97, 0.97, "p < 1e-4", transform=ax.transAxes,
+        ha="right", va="top", bbox=ps.textbox())
+
+# Other styles:
+ax.text(..., bbox=ps.textbox("square"))   # sharp corners (heatmaps, tables)
+ax.text(..., bbox=ps.textbox("minimal"))  # borderless, faint (dense plots)
+
+# Override individual fields without copy-pasting the whole dict:
+ax.text(..., bbox=ps.textbox(alpha=0.9, edgecolor="black"))
+ax.text(..., bbox=ps.textbox("square", alpha=0.9))
+```
+
+To add your own style, subclass `ps.TextBoxStyle` and register it:
+
+```python
+import plot_styler as ps
+from plot_styler.core import _TEXTBOX_STYLES
+
+class HighlightTextBox(ps.TextBoxStyle):
+    _BBOX = {"boxstyle": "round,pad=0.4", "facecolor": "#FFF6C4",
+             "edgecolor": "#D4A800", "alpha": 1.0}
+
+_TEXTBOX_STYLES["highlight"] = HighlightTextBox
+ax.text(..., bbox=ps.textbox("highlight"))
+```
+
 See `examples/demo.py` for a runnable end-to-end example.
 
 ## Design logic
@@ -257,6 +288,8 @@ plot_styler/
 | `ps.use(conference, palette="default", size="normal")` | Load base + conference style and apply the named palette. `size` may be `"normal"` (default), `"small"`, or `"tiny"` — see [Size variants](#size-variants). |
 | `ps.figsize(conference, region, fraction=1.0, aspect=1/GOLDEN, gutter=0.1)` | Compute `(w, h)` in inches. `region` is a key in `widths.json` (usually `"column"` or `"text"`). `fraction` is the width share for side-by-side subfigures. `gutter` is the inches of horizontal gap between them. |
 | `ps.set_palette(name)` | Swap the matplotlib color cycle to the named palette; affects Axes created after this call. Returns the list of hex colors. |
+| `ps.textbox(style="round", **overrides)` | Factory that returns a `bbox` dict for `ax.text(..., bbox=...)`. Built-in styles: `"round"` (default, rounded semi-transparent white), `"square"` (sharp corners), `"minimal"` (borderless faint backdrop). Override individual fields via kwargs (e.g. `ps.textbox("square", alpha=0.9)`). Returns a fresh dict per call. |
+| `ps.TextBoxStyle` (+ `RoundTextBox`, `SquareTextBox`, `MinimalTextBox`) | Base class and concrete styles backing `ps.textbox()`. Subclass `TextBoxStyle` with a `_BBOX` dict and add the class to `plot_styler.core._TEXTBOX_STYLES` to register a new named style. |
 | `ps.load_widths()` | Return the widths dict. |
 | `ps.load_palettes()` | Return the palettes dict — use to grab a specific hex value. |
 | `ps.GOLDEN` | `(1 + √5) / 2`, used as the default aspect. |
