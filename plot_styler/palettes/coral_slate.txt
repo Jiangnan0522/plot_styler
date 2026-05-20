@@ -1,0 +1,15 @@
+# coral_slate palette — editorial warm/cool pairing for paper figures.
+# Anchored on a burnt-coral accent and a muted slate-blue, with amber for
+# highlights/targets and a near-black for text/edges. Extends with related
+# warm and cool hues so the palette also works for line plots with several
+# series. Order is alternating warm/cool from highest contrast → softest.
+# Source: hand-picked, in the family of Aaron Christianson's "tropical 5".
+#E76F51
+#6C8EAD
+#E9A03B
+#2A9D8F
+#C9777E
+#264653
+#F4D8BA
+#A1B8CF
+#3A3A3A
